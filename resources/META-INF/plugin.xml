@@ -1,0 +1,48 @@
+<idea-plugin>
+  <id>AutoSwitchIm</id>
+  <name>Auto Switch Input Source In IdeaVim Mode</name>
+  <version>1.0</version>
+  <vendor email="rieon@rieon.cn" url="http://rieon.cn">Rieon Ke</vendor>
+
+  <description><![CDATA[
+    <h1>Auto Switch Input Source In IdeaVim Mode</h1>
+    <h2>For MAC Only</h2>
+      An plugin for auto switching input method while using IdeaVim plugin FOR MAC ONLY<br>
+      <li>Auto switch to English IME while in normal/visual mode</li>
+      <li>Auto switch to the last IME while returning back insert mode</li>
+      <li>Auto switch to the last IME while idea re-focused</li>
+      <h1>How to use this plugin</h1>
+      <li>1. download the ImUtil native tool </li>
+      <li>2. copy the ImUtil to /usr/local/bin/ImUtil </li>
+      <h1> Author and the project page </h1>
+      <a href="https://github.com/rieonke/idea-auto-switch-im">Follow this link to Github</a>
+    ]]></description>
+
+  <change-notes><![CDATA[
+      <li>0.1 basic switch works</li>
+    ]]>
+  </change-notes>
+
+  <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
+  <idea-version since-build="145.0"/>
+
+  <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
+       on how to target different products -->
+  <!-- uncomment to enable plugin in all products
+  <depends>com.intellij.modules.lang</depends>
+  -->
+
+  <extensions defaultExtensionNs="com.intellij">
+    <!-- Add your extensions here -->
+  </extensions>
+
+  <actions>
+    <!-- Add your actions here -->
+  </actions>
+
+  <application-components>
+    <component>
+      <implementation-class>cn.rieon.idea.vim.AutoSwitchComponent</implementation-class>
+    </component>
+  </application-components>
+</idea-plugin>
