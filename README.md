@@ -1,8 +1,8 @@
 # idea-auto-switch-im
-An IntelliJ IDEA Plugin for auto-switching Input Method in vim mode
+An IntelliJ IDEA Plugin for auto-switching Input Method in vim mode FOR MAC ONLY
 
 # Introduction
-It will help to switch Input method automatically while in using vim mode in Idea.
+It will help to switch Input method automatically while in using vim mode in Mac Idea.
 
 # How to use
 1. Download the `ImUtil` file
