@@ -10,12 +10,12 @@ import java.util.Map;
  * @version 1.0.0
  * @since 2017/5/19
  */
-public class InputSource {
+class InputSource {
 
     private static final Logger LOG = Logger.getInstance(InputSource.class);
 
-    public static final int BY_ID = 1;
-    public static final int BY_NAME = 2;
+    static final int BY_ID = 1;
+    static final int BY_NAME = 2;
 
     static {
         try {
@@ -66,7 +66,7 @@ public class InputSource {
         return nativeSwitchToInputSource(source,type);
     }
 
-    public static Map<String,String> getAllInputSources(){
+    static Map<String,String> getAllInputSources(){
         LOG.info("GET ALL INPUT SOURCES");
         return nativeGetAllInputSources();
     }
