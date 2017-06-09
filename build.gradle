@@ -19,7 +19,6 @@ sourceSets {
     main {
         java {
             srcDirs 'src'
-            srcDirs 'gen'
         }
         resources {
             srcDirs 'resources'
@@ -37,7 +36,7 @@ apply plugin: "kotlin"
 
 tasks.withType(JavaCompile) { options.encoding = 'UTF-8' }
 
-version="1.1"
+version="1.2"
 intellij {
     version 'IU-LATEST-TRUNK-SNAPSHOT'
     pluginName 'AutoSwitchIm'

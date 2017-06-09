@@ -1,4 +1,3 @@
-
 /**
  *
  * THIS CLASS WAS ORIGINALLY FROM ADAM HEINRICH WITH MIT LICENSE
@@ -9,16 +8,16 @@
  *
  */
 
-package cn.rieon.idea.vim;
+package cn.rieon.idea.plugin.AutoSwitchIm.util;
 
 import java.io.*;
 
-class NativeUtils {
+public class NativeUtil {
 
     /**
      * Private constructor - this class will never be instanced
      */
-    private NativeUtils() {
+    private NativeUtil() {
     }
 
     /**
@@ -71,7 +70,7 @@ class NativeUtils {
         int readBytes;
 
         // Open and check input stream
-        InputStream is = NativeUtils.class.getResourceAsStream(path);
+        InputStream is = NativeUtil.class.getResourceAsStream(path);
         if (is == null) {
 
             return null;

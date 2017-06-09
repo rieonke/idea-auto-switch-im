@@ -1,7 +1,7 @@
 <idea-plugin>
   <id>AutoSwitchIm</id>
   <name>Auto Switch Input Source In IdeaVim Mode</name>
-  <version>1.1</version>
+  <version>1.2</version>
   <vendor email="rieon@rieon.cn" url="http://rieon.cn">Rieon Ke</vendor>
 
   <description><![CDATA[
@@ -13,6 +13,8 @@
       <li>Auto switch to the last IME while idea re-focused</li>
       <h1>Author and the project page </h1>
       <a href="https://github.com/rieonke/idea-auto-switch-im">Follow this link to Github</a>
+      <br>
+      <br>
 
     <h2>只有MAC可用</h2>
       在IdeaVim中自动切换输入法<br>
@@ -25,12 +27,14 @@
     ]]></description>
 
   <change-notes><![CDATA[
+      <li>1.2 Fixed known bugs in JNI <br> add switch input source options setting</li>
       <li>1.1 use JNI to replace native module</li>
       <li>1.0 basic switch works</li>
 
       <br/>
       <br/>
 
+      <li>1.2 修复JNI部分的BUG<br/>提供了切换输入法选项设置</li>
       <li>1.1 使用JNI替换掉原来的本地执行文件</li>
       <li>1.0 basic switch works</li>
     ]]>
@@ -46,7 +50,9 @@
   -->
 
   <extensions defaultExtensionNs="com.intellij">
-    <!-- Add your extensions here -->
+    <applicationConfigurable instance="cn.rieon.idea.plugin.AutoSwitchIm.ui.InputSourceConfigure"/>
+    <applicationService serviceInterface="cn.rieon.idea.plugin.AutoSwitchIm.provider.ConfigurationProvider"
+                        serviceImplementation="cn.rieon.idea.plugin.AutoSwitchIm.provider.ConfigurationProvider"/>
   </extensions>
 
   <actions>
@@ -55,7 +61,7 @@
 
   <application-components>
     <component>
-      <implementation-class>cn.rieon.idea.vim.AutoSwitchComponent</implementation-class>
+      <implementation-class>cn.rieon.idea.plugin.AutoSwitchIm.component.AutoSwitchComponent</implementation-class>
     </component>
   </application-components>
 </idea-plugin>
