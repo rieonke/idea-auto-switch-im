@@ -1,8 +1,9 @@
 package cn.rieon.idea.vim;
 
+import com.intellij.openapi.diagnostic.Logger;
+
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Map;
 
 /**
  * @author Rieon Ke <rieon@rieon.cn>
@@ -11,59 +12,63 @@ import java.util.List;
  */
 public class InputSource {
 
-    private String ImSwitchLocation = null;
+    private static final Logger LOG = Logger.getInstance(InputSource.class);
 
-    private static InputSource instance = null;
+    public static final int BY_ID = 1;
+    public static final int BY_NAME = 2;
 
-    private InputSource(String imSwitchLocation){
-        ImSwitchLocation = imSwitchLocation;
-    }
+    static {
+        try {
 
-    public static InputSource getInstance(String imSwitchLocation){
+            // if the lib already in the system lib path
+            System.loadLibrary("AutoSwitchInputSource");
+            LOG.info("LIB LOADED");
 
-        if (instance == null){
-            instance = new InputSource(imSwitchLocation);
+        } catch (UnsatisfiedLinkError e) {
+
+            try {
+
+                String libPath = NativeUtils.getLibPath("/native/libAutoSwitchInputSource.jnilib");
+
+                if (libPath == null){
+                    LOG.error("GET LIB PATH FAILED");
+
+                }else{
+
+                    System.load(libPath);
+                    LOG.info("LOADED FORM NATIVE UTILS");
+                    LOG.info("CURRENT LIB PATH " + libPath);
+
+                }
+
+            } catch (IOException e1) {
+
+                LOG.error("LOADED LIB FAILED");
+
+                LOG.error(e1);
+
+            }
+
         }
-        return instance;
     }
 
-    public List<String> getAllInputSoure() throws IOException {
+    private static native String nativeGetCurrentInputSource();
+    private static native boolean nativeSwitchToInputSource(String inputSourceName,int type);
+    private static native Map<String,String> nativeGetAllInputSources();
 
-        BufferedReader reader = execImSelect("il");
-        String s = null;
-        List<String> allInputResource = new ArrayList<>();
-        while ((s = reader.readLine()) != null) {
-            allInputResource.add(s);
-        }
-
-        allInputResource.forEach(System.out::println);
-
-        return allInputResource;
+    static String getCurrentInputSource(){
+        LOG.info("GET CURRENT INPUT SOURCE");
+        return nativeGetCurrentInputSource();
     }
 
-    public String getCurrentInputSource() throws IOException {
-
-        BufferedReader reader = execImSelect("i");
-        String s = null;
-        List<String> allInputResource = new ArrayList<>();
-        while ((s = reader.readLine()) != null) {
-            allInputResource.add(s);
-        }
-
-        return allInputResource.get(0);
+    static boolean switchTo(String source,int type){
+        LOG.info("SWITCH TO INPUT SOURCE "+ source);
+        return nativeSwitchToInputSource(source,type);
     }
 
-    public BufferedReader execImSelect(String command) throws IOException {
-
-        Process result = Runtime.getRuntime().exec(ImSwitchLocation+" -"+command);
-        return new BufferedReader(new InputStreamReader(result.getInputStream()));
-
-    }
-
-    public void switchToInputSource(String sourceId) throws IOException {
-
-        execImSelect("is " + sourceId);
-
+    public static Map<String,String> getAllInputSources(){
+        LOG.info("GET ALL INPUT SOURCES");
+        return nativeGetAllInputSources();
     }
 
 }

@@ -1,7 +1,7 @@
 <idea-plugin>
   <id>AutoSwitchIm</id>
   <name>Auto Switch Input Source In IdeaVim Mode</name>
-  <version>1.0</version>
+  <version>1.1</version>
   <vendor email="rieon@rieon.cn" url="http://rieon.cn">Rieon Ke</vendor>
 
   <description><![CDATA[
@@ -11,15 +11,28 @@
       <li>Auto switch to English IME while in normal/visual mode</li>
       <li>Auto switch to the last IME while returning back insert mode</li>
       <li>Auto switch to the last IME while idea re-focused</li>
-      <h1>How to use this plugin</h1>
-      <li>1. download the ImUtil native tool </li>
-      <li>2. copy the ImUtil to /usr/local/bin/ImUtil </li>
-      <h1> Author and the project page </h1>
+      <h1>Author and the project page </h1>
       <a href="https://github.com/rieonke/idea-auto-switch-im">Follow this link to Github</a>
+
+    <h2>只有MAC可用</h2>
+      在IdeaVim中自动切换输入法<br>
+      <li>在normal/visual 模式自动切换到英文输入法</li>
+      <li>当从正常模式切换到插入模式自动切换上一个输入法</li>
+      <li>当idea重新获得焦点时切换到上一个输入法</li>
+      <h1>作者和项目链接</h1>
+      <a href="https://github.com/rieonke/idea-auto-switch-im">托管在GitHub</a>
+
     ]]></description>
 
   <change-notes><![CDATA[
-      <li>0.1 basic switch works</li>
+      <li>1.1 use JNI to replace native module</li>
+      <li>1.0 basic switch works</li>
+
+      <br/>
+      <br/>
+
+      <li>1.1 使用JNI替换掉原来的本地执行文件</li>
+      <li>1.0 basic switch works</li>
     ]]>
   </change-notes>
 

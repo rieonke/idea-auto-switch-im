@@ -1,23 +1,18 @@
 package cn.rieon.idea.vim;
 
-import clojure.lang.IFn;
 import com.intellij.ide.FrameStateListener;
 import com.intellij.ide.FrameStateManager;
 import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationType;
 import com.intellij.notification.Notifications;
-import com.intellij.openapi.application.PathManager;
 import com.intellij.openapi.command.CommandAdapter;
 import com.intellij.openapi.command.CommandEvent;
 import com.intellij.openapi.command.CommandListener;
 import com.intellij.openapi.command.CommandProcessor;
 import com.intellij.openapi.components.ApplicationComponent;
 import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.structuralsearch.plugin.ui.ConfigurationManager;
-import com.sun.webkit.plugin.PluginManager;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -37,9 +32,9 @@ public class AutoSwitchComponent implements ApplicationComponent {
      */
     private String lastInputSource = null;
 
-    private InputSource inputSourceInstance;
+    private Boolean inNormal = true;
 
-    private String defaultEnglishInputSource = "com.apple.keylayout.ABC";
+    public static final String defaultEnglishInputSource = "com.apple.keylayout.ABC";
 
     /**
      * switch input source in these vim states
@@ -93,16 +88,11 @@ public class AutoSwitchComponent implements ApplicationComponent {
     @Override
     public void initComponent() {
 
-        URL resource=this.getClass().getClassLoader().getResource(".");
-        if (resource == null){
-            Notification notification = new Notification("Switch IME Error","Switch IME Error","Native ImSwitch file missing!",NotificationType.ERROR);
-            Notifications.Bus.notify(notification);
-        }else {
-            inputSourceInstance = InputSource.getInstance("/usr/local/bin/ImUtil");
-            lastInputSource = getCurrentInputSourceId();
-            CommandProcessor.getInstance().addCommandListener(getCommandListener());
-            FrameStateManager.getInstance().addListener(getFrameStateListener());
-        }
+        LOG.info("INIT COMPONENT");
+
+        lastInputSource = getCurrentInputSourceId();
+        CommandProcessor.getInstance().addCommandListener(getCommandListener());
+        FrameStateManager.getInstance().addListener(getFrameStateListener());
 
     }
 
@@ -119,14 +109,21 @@ public class AutoSwitchComponent implements ApplicationComponent {
 
                 if (VimStateSwitchToABCOnly.contains(commandName)){
                     lastInputSource = getCurrentInputSourceId();
+                    inNormal = true;
                     if(lastInputSource == null || Objects.equals(lastInputSource, defaultEnglishInputSource))
                         return;
                     switchTo(defaultEnglishInputSource);
                 }else if (VimStateSwitchToLastIm.contains(commandName)){
                     String current = getCurrentInputSourceId();
+                    inNormal = false;
                     if (current == null || current.equals(lastInputSource))
                         return;
                     switchTo(lastInputSource);
+                }else if ("Typing".equals(commandName)){
+                    inNormal = false;
+                }else if ("".equals(commandName)){
+                    if (inNormal)
+                        switchTo(defaultEnglishInputSource);
                 }
             }
         };
@@ -161,27 +158,28 @@ public class AutoSwitchComponent implements ApplicationComponent {
      */
     private String getCurrentInputSourceId(){
 
-        try {
-            return inputSourceInstance.getCurrentInputSource();
-        } catch (IOException e) {
+        String current = InputSource.getCurrentInputSource();
+
+        LOG.info("CURRENT INPUT SOURCE  " + current);
+        if (current == null || current.length() <= 0){
             Notification notification = new Notification("Switch IME Error","Switch IME Error","Get current input source faild",NotificationType.ERROR);
             Notifications.Bus.notify(notification);
-            LOG.error(e);
+            LOG.info("GET CURRENT INPUT SOURCE FAILED");
         }
-        return null;
+
+        return current;
+
     }
 
-    private void switchTo(String source){
+    void switchTo(String source){
 
+        LOG.info("SWITCH TO INPUT SOURCE  " + source);
         if (source == null)
             return;
-
-        try {
-            inputSourceInstance.switchToInputSource(source);
-        } catch (IOException e) {
-            Notification notification = new Notification("Switch IME Error","Switch IME Error","Switch IME Failed",NotificationType.ERROR);
+        if (!InputSource.switchTo(source,InputSource.BY_ID)) {
+            Notification notification = new Notification("Switch IME Error", "Switch IME Error", "Switch IME Failed", NotificationType.ERROR);
             Notifications.Bus.notify(notification);
-            LOG.error(e);
+            LOG.info("SWITCH TO INPUT SOURCE FAILED");
         }
     }
 
@@ -195,4 +193,5 @@ public class AutoSwitchComponent implements ApplicationComponent {
     public String getComponentName() {
         return "AutoSwitchComponent";
     }
+
 }
