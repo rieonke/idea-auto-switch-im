@@ -13,7 +13,6 @@ import com.intellij.openapi.command.CommandListener
 import com.intellij.openapi.command.CommandProcessor
 import com.intellij.openapi.components.ApplicationComponent
 import com.intellij.openapi.diagnostic.Logger
-
 import java.util.*
 
 /**
@@ -34,6 +33,8 @@ class AutoSwitchComponent : ApplicationComponent {
 
     private var configurationProvider: ConfigurationProvider? = null
 
+
+
     /**
      * init component and add listener
      */
@@ -41,21 +42,37 @@ class AutoSwitchComponent : ApplicationComponent {
 
         LOG.info("INIT COMPONENT")
 
-
         lastInputSource = currentInputSourceId
         CommandProcessor.getInstance().addCommandListener(commandListener)
         FrameStateManager.getInstance().addListener(frameStateListener)
 
         configurationProvider = ConfigurationProvider.instance
 
-        if (configurationProvider!!.selectedInputSource != null) {
+        if (configurationProvider!!.OutVimInsertInput != null) {
 
-            switchToInputSource = configurationProvider!!.selectedInputSource!!
+            OutVimInsertInput = configurationProvider!!.OutVimInsertInput!!
 
-            LOG.info("LOAD PREVIOUS CONFIG")
-            LOG.info("USE CONFIG INPUT SOURCE " + switchToInputSource)
+            LOG.info("USE CONFIG INPUT SOURCE FOR OUT VIM INSERT MODE" + OutVimInsertInput)
         }
 
+        if (configurationProvider!!.InVimInsertInput != null) {
+
+            InVimInsertInput = configurationProvider!!.InVimInsertInput!!
+
+            LOG.info("USE CONFIG INPUT SOURCE FOR In VIM INSERT MODE" + InVimInsertInput)
+        }
+        if (configurationProvider!!.OutOfIdeaInput != null) {
+
+            OutOfIdeaInput = configurationProvider!!.OutOfIdeaInput!!
+
+            LOG.info("USE CONFIG INPUT SOURCE FOR OUT OF IDEA" + OutOfIdeaInput)
+        }
+        if (configurationProvider!!.IdeaFocusedInput != null) {
+
+            IdeaFocusedInput = configurationProvider!!.IdeaFocusedInput!!
+
+            LOG.info("USE CONFIG INPUT SOURCE FOR IDEA FOCUSED" + IdeaFocusedInput)
+        }
         LOG.info("INIT SUCCESSFUL")
     }
 
@@ -69,23 +86,23 @@ class AutoSwitchComponent : ApplicationComponent {
 
                 val commandName = event!!.commandName
 
-                if (VimStateSwitchToABCOnly.contains(commandName)) {
+                if (OUT_VIM_INSERT_MODE.contains(commandName)) {
                     lastInputSource = currentInputSourceId
                     inNormal = true
-                    if (lastInputSource == null || lastInputSource == switchToInputSource)
+                    if (lastInputSource == null || lastInputSource == OutVimInsertInput)
                         return
-                    switchTo(switchToInputSource)
-                } else if (VimStateSwitchToLastIm.contains(commandName)) {
+                    switchTo(OutVimInsertInput)
+                } else if (IN_VIM_INSERT_MODE.contains(commandName)) {
                     val current = currentInputSourceId
                     inNormal = false
-                    if (current == null || current == lastInputSource)
-                        return
-                    switchTo(lastInputSource)
+                    if (current == null || current == InVimInsertInput )
+                            return
+                    switchTo(InVimInsertInput)
                 } else if ("Typing" == commandName) {
                     inNormal = false
                 } else if ("" == commandName) {
                     if (inNormal!!)
-                        switchTo(switchToInputSource)
+                        switchTo(OutVimInsertInput)
                 }
             }
         }
@@ -97,14 +114,17 @@ class AutoSwitchComponent : ApplicationComponent {
     private val frameStateListener: FrameStateListener
         get() = object : FrameStateListener.Adapter() {
             override fun onFrameDeactivated() {
-                lastInputSource = currentInputSourceId
+                val current = currentInputSourceId
+                if (current == null || current == OutOfIdeaInput)
+                    return
+                switchTo(OutOfIdeaInput)
             }
 
             override fun onFrameActivated() {
                 val current = currentInputSourceId
-                if (current == null || current == lastInputSource)
+                if (current == null || current == IdeaFocusedInput)
                     return
-                switchTo(lastInputSource)
+                switchTo(IdeaFocusedInput)
             }
         }
 
@@ -131,7 +151,7 @@ class AutoSwitchComponent : ApplicationComponent {
     internal fun switchTo(source: String?) {
 
         LOG.info("SWITCH TO INPUT SOURCE  " + source!!)
-        if (!InputSourceUtil.switchTo(source, InputSourceUtil.BY_ID)) {
+        if (!InputSourceUtil.switchTo(source)) {
             val notification = Notification("Switch IME Error", "Switch IME Error", "Switch IME Failed", NotificationType.ERROR)
             Notifications.Bus.notify(notification)
             LOG.info("SWITCH TO INPUT SOURCE FAILED")
@@ -150,13 +170,16 @@ class AutoSwitchComponent : ApplicationComponent {
 
         private val LOG = Logger.getInstance(AutoSwitchComponent::class.java)
 
-        var switchToInputSource = "com.apple.keylayout.ABC"
+        var OutVimInsertInput = "com.apple.keylayout.ABC"
+        var InVimInsertInput = "com.apple.keylayout.ABC"
+        var IdeaFocusedInput = "com.apple.keylayout.ABC"
+        var OutOfIdeaInput = "com.apple.keylayout.ABC"
 
 
         /**
          * switch input source in these plugin states
          */
-        private val VimStateSwitchToABCOnly = Arrays.asList(
+        private val OUT_VIM_INSERT_MODE = Arrays.asList(
                 "Vim Exit Visual Mode",
                 "Vim Toggle Line Selection",
                 "Vim Toggle Block Selection",
@@ -166,7 +189,7 @@ class AutoSwitchComponent : ApplicationComponent {
         /**
          * switch to last input source in these plugin states
          */
-        private val VimStateSwitchToLastIm = Arrays.asList(
+        private val IN_VIM_INSERT_MODE = Arrays.asList(
                 "Vim Enter",
                 "Vim Insert at Line Start",
                 "Vim Insert New Line Above",

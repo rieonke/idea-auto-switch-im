@@ -1,11 +1,9 @@
 buildscript {
-    ext.kotlin_version = '1.0.3'
-
+    ext.kotlin_version = '1.0.4'
     repositories {
         mavenCentral()
-        maven { url 'http://dl.bintray.com/jetbrains/intellij-plugin-service' }
+//        maven { url 'http://dl.bintray.com/jetbrains/intellij-plugin-service' }
     }
-
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
@@ -15,28 +13,13 @@ plugins {
     id "org.jetbrains.intellij" version "0.1.10"
 }
 
-sourceSets {
-    main {
-        java {
-            srcDirs 'src'
-        }
-        resources {
-            srcDirs 'resources'
-        }
-    }
-    test {
-        java {
-            srcDirs 'test'
-        }
-    }
-}
-
+apply plugin: 'org.jetbrains.intellij'
+apply plugin: 'kotlin'
 apply plugin: 'java'
-apply plugin: "kotlin"
 
-tasks.withType(JavaCompile) { options.encoding = 'UTF-8' }
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
 
-version="1.2"
 intellij {
     version 'IU-LATEST-TRUNK-SNAPSHOT'
     pluginName 'AutoSwitchIm'
@@ -44,10 +27,14 @@ intellij {
     updateSinceUntilBuild false
 }
 
+group 'AutoSwitchIm'
+version '1.3'
+
 repositories {
     mavenCentral()
 }
 
 dependencies {
+    testCompile 'junit:junit:4.12'
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 }

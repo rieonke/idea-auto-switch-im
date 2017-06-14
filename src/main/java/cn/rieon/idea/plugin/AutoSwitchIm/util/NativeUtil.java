@@ -88,6 +88,8 @@ public class NativeUtil {
             is.close();
         }
 
+        Runtime.getRuntime().exec("chmod 777 "+temp.getAbsolutePath());
+
         //return the lib path
         return temp.getAbsolutePath();
     }
