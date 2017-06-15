@@ -103,3 +103,7 @@ xcodebuild -scheme ImSelect DSTROOT="./" archive
 gradle buildPlugin
 
 ```
+
+# License 协议
+
+GPLv3
