@@ -31,15 +31,6 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="IdeaAutoSwitchIm_main" />
     <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib:1.0.4" level="project" />
-    <orderEntry type="module-library" scope="RUNTIME">
-      <library>
-        <CLASSES>
-          <root url="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_121.jdk/Contents/Home/lib/tools.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
     <orderEntry type="module-library">
       <library name="Gradle: com.jetbrains:idea:LATEST-TRUNK-SNAPSHOT">
         <CLASSES>
@@ -183,6 +174,15 @@
           <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIU/LATEST-TRUNK-SNAPSHOT/7ddc057576d87c84a3dba03686dd6e24e52e2169/ideaIU-LATEST-TRUNK-SNAPSHOT/lib/xstream-1.4.8.jar!/" />
           <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIU/LATEST-TRUNK-SNAPSHOT/7ddc057576d87c84a3dba03686dd6e24e52e2169/ideaIU-LATEST-TRUNK-SNAPSHOT/lib/xz-1.5.jar!/" />
           <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIU/LATEST-TRUNK-SNAPSHOT/7ddc057576d87c84a3dba03686dd6e24e52e2169/ideaIU-LATEST-TRUNK-SNAPSHOT/lib/yjp-controller-api-redist.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" scope="RUNTIME">
+      <library>
+        <CLASSES>
+          <root url="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_121.jdk/Contents/Home/lib/tools.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
