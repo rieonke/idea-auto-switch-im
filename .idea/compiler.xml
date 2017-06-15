@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile default="true" name="Default" enabled="true">
+        <sourceOutputDir name="generated-sources" />
+        <sourceTestOutputDir name="generated-test-sources" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel target="1.8">
+      <module name="IdeaAutoSwitchIm_main" target="1.8" />
+      <module name="IdeaAutoSwitchIm_test" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+</project>
