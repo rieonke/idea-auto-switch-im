@@ -1,17 +1,27 @@
 <idea-plugin>
     <id>AutoSwitchIm</id>
     <name>Auto Switch Input Source In IdeaVim Mode</name>
+<<<<<<< HEAD
     <version>1.3</version>
+=======
+    <version>1.2</version>
+>>>>>>> 4e9431b91d2f51f480520edfe1313bb8dfcd2b87
     <vendor email="rieon@rieon.cn" url="http://rieon.cn">Rieon Ke</vendor>
 
     <description><![CDATA[
     <h1>Auto Switch Input Source In IdeaVim Mode</h1>
     <h2>For MAC Only</h2>
       An plugin for auto switching input method while using IdeaVim plugin FOR MAC ONLY<br>
+<<<<<<< HEAD
       <li>Auto switch to specified IME while in normal/visual mode</li>
       <li>Auto switch to specified IME while returning back insert mode</li>
       <li>Auto switch to specified IME while leaving idea </li>
       <li>Auto switch to specified IME while idea re-focused</li>
+=======
+      <li>Auto switch to English IME while in normal/visual mode</li>
+      <li>Auto switch to the last IME while returning back insert mode</li>
+      <li>Auto switch to the last IME while idea re-focused</li>
+>>>>>>> 4e9431b91d2f51f480520edfe1313bb8dfcd2b87
       <h1>Author and the project page </h1>
       <a href="https://github.com/rieonke/idea-auto-switch-im">Follow this link to Github</a>
       <br>
@@ -19,17 +29,26 @@
 
     <h2>只有MAC可用</h2>
       在IdeaVim中自动切换输入法<br>
+<<<<<<< HEAD
       <li>在normal/visual 模式自动切换到指定输入法</li>
       <li>当从正常模式切换到插入模式自动切换到指定输入法</li>
       <li>当idea重新获得焦点时切换到指定输入法</li>
       <li>当离开idea时切换到指定输入法</li>
+=======
+      <li>在normal/visual 模式自动切换到英文输入法</li>
+      <li>当从正常模式切换到插入模式自动切换上一个输入法</li>
+      <li>当idea重新获得焦点时切换到上一个输入法</li>
+>>>>>>> 4e9431b91d2f51f480520edfe1313bb8dfcd2b87
       <h1>作者和项目链接</h1>
       <a href="https://github.com/rieonke/idea-auto-switch-im">托管在GitHub</a>
 
     ]]></description>
 
     <change-notes><![CDATA[
+<<<<<<< HEAD
       <li>1.3 Bugfix and add more config options</li>
+=======
+>>>>>>> 4e9431b91d2f51f480520edfe1313bb8dfcd2b87
       <li>1.2 Fixed known bugs in JNI <br> add switch input source options setting</li>
       <li>1.1 use JNI to replace native module</li>
       <li>1.0 basic switch works</li>
@@ -37,7 +56,10 @@
       <br/>
       <br/>
 
+<<<<<<< HEAD
       <li>1.3 修复Bug,添加了更多的配置选项</li>
+=======
+>>>>>>> 4e9431b91d2f51f480520edfe1313bb8dfcd2b87
       <li>1.2 修复JNI部分的BUG<br/>提供了切换输入法选项设置</li>
       <li>1.1 使用JNI替换掉原来的本地执行文件</li>
       <li>1.0 basic switch works</li>
