@@ -1,5 +1,6 @@
 package cn.rieon.idea.plugin.AutoSwitchIm.ui
 
+import cn.rieon.idea.plugin.AutoSwitchIm.Constraints
 import cn.rieon.idea.plugin.AutoSwitchIm.provider.ConfigurationProvider
 import cn.rieon.idea.plugin.AutoSwitchIm.util.InputSourceUtil
 import com.intellij.openapi.options.Configurable
@@ -49,7 +50,11 @@ class InputSourceConfigure : Configurable {
     override fun createComponent(): JComponent? {
         settingPanel = InputSourceConfigureForm()
         configurationProvider = ConfigurationProvider.instance
-        val sources = InputSourceUtil.allInputSources
+        var sources = InputSourceUtil.allInputSources
+        val nonePair:Pair<String,String> = Pair(Constraints.CONFIG_INPUT_NONE,"Never Switch It!")
+        val lastPair:Pair<String,String> = Pair(Constraints.CONFIG_INPUT_LAST,"Last Input Source")
+        sources.add(nonePair)
+        sources.add(lastPair)
         return settingPanel!!.createPanel(configurationProvider, sources)
 
     }

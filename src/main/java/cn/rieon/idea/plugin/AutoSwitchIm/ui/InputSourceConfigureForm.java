@@ -64,17 +64,17 @@ class InputSourceConfigureForm {
         String outVimInsertValue = exactValueFromInput(outVimInsertInput);
 
         if (ideaFocusedValue != null){
-            configurationProvider.setIdeaFocusedInput(ideaFocusedValue);
+            configurationProvider.setInIdeaConfig(ideaFocusedValue);
         }
 
         if (outOfIdeaValue != null){
-            configurationProvider.setOutOfIdeaInput(outOfIdeaValue);
+            configurationProvider.setOutOfIdeaConfig(outOfIdeaValue);
         }
         if (inVimInsertValue != null){
-            configurationProvider.setInVimInsertInput(inVimInsertValue);
+            configurationProvider.setInVimInsertConfig(inVimInsertValue);
         }
         if (outVimInsertValue != null){
-            configurationProvider.setOutVimInsertInput(outVimInsertValue);
+            configurationProvider.setOutVimInsertConfig(outVimInsertValue);
         }
 
     }
@@ -131,31 +131,31 @@ class InputSourceConfigureForm {
             InVimInsertCbx.addItem(item);
             OutVimInsertCbx.addItem(item);
 
-            if (Objects.equals(configurationProvider.getIdeaFocusedInput(), pair.getKey())) {
+            if (Objects.equals(configurationProvider.getInIdeaConfig(), pair.getKey())) {
                 IdeaFocusedCbx.setSelectedItem(item);
             }
-            if (Objects.equals(configurationProvider.getOutOfIdeaInput(), pair.getKey())) {
+            if (Objects.equals(configurationProvider.getOutOfIdeaConfig(), pair.getKey())) {
                 OutOfIdeaCbx.setSelectedItem(item);
             }
-            if (Objects.equals(configurationProvider.getInVimInsertInput(), pair.getKey())) {
+            if (Objects.equals(configurationProvider.getInVimInsertConfig(), pair.getKey())) {
                 InVimInsertCbx.setSelectedItem(item);
             }
-            if (Objects.equals(configurationProvider.getOutVimInsertInput(), pair.getKey())) {
+            if (Objects.equals(configurationProvider.getOutVimInsertConfig(), pair.getKey())) {
                 OutVimInsertCbx.setSelectedItem(item);
             }
 
         });
 
-        if (configurationProvider.getIdeaFocusedInput() == null) {
+        if (configurationProvider.getInIdeaConfig() == null) {
             IdeaFocusedCbx.setSelectedItem("ABC(com.apple.keylayout.ABC)");
         }
-        if (configurationProvider.getOutOfIdeaInput() == null) {
+        if (configurationProvider.getOutOfIdeaConfig() == null) {
             OutOfIdeaCbx.setSelectedItem("ABC(com.apple.keylayout.ABC)");
         }
-        if (configurationProvider.getOutVimInsertInput() == null) {
+        if (configurationProvider.getOutVimInsertConfig() == null) {
             OutVimInsertCbx.setSelectedItem("ABC(com.apple.keylayout.ABC)");
         }
-        if (configurationProvider.getInVimInsertInput() == null){
+        if (configurationProvider.getInVimInsertConfig() == null){
             InVimInsertCbx.setSelectedItem("ABC(com.apple.keylayout.ABC)");
         }
 

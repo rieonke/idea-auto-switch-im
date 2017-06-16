@@ -1,5 +1,6 @@
 package cn.rieon.idea.plugin.AutoSwitchIm.component
 
+import cn.rieon.idea.plugin.AutoSwitchIm.Constraints
 import cn.rieon.idea.plugin.AutoSwitchIm.provider.ConfigurationProvider
 import cn.rieon.idea.plugin.AutoSwitchIm.util.InputSourceUtil
 import com.intellij.ide.FrameStateListener
@@ -24,10 +25,15 @@ import java.util.*
  */
 class AutoSwitchComponent : ApplicationComponent {
 
+    private var currentInputSource: String? = null
+
     /**
      * last input source
      */
-    private var lastInputSource: String? = null
+    private var lastOutVimInsert: String? = null
+    private var lastInVimInsert: String? = null
+    private var lastOutIdea: String? = null
+    private var lastInIdea: String? = null
 
     private var inNormal: Boolean? = true
 
@@ -42,37 +48,42 @@ class AutoSwitchComponent : ApplicationComponent {
 
         LOG.info("INIT COMPONENT")
 
-        lastInputSource = currentInputSourceId
+        currentInputSource = currentInputSourceId
         CommandProcessor.getInstance().addCommandListener(commandListener)
         FrameStateManager.getInstance().addListener(frameStateListener)
 
+        /**
+         * Reload configuration from configuration provider
+         */
+
         configurationProvider = ConfigurationProvider.instance
 
-        if (configurationProvider!!.OutVimInsertInput != null) {
+        if (configurationProvider!!.outVimInsertConfig != null) {
 
-            OutVimInsertInput = configurationProvider!!.OutVimInsertInput!!
+            outVimInsertConfig = configurationProvider!!.outVimInsertConfig!!
 
-            LOG.info("USE CONFIG INPUT SOURCE FOR OUT VIM INSERT MODE" + OutVimInsertInput)
+            LOG.info("USE CONFIG INPUT SOURCE FOR OUT VIM INSERT MODE" + outVimInsertConfig)
         }
 
-        if (configurationProvider!!.InVimInsertInput != null) {
+        if (configurationProvider!!.InVimInsertConfig != null) {
 
-            InVimInsertInput = configurationProvider!!.InVimInsertInput!!
+            inVimInsertConfig = configurationProvider!!.InVimInsertConfig!!
 
-            LOG.info("USE CONFIG INPUT SOURCE FOR In VIM INSERT MODE" + InVimInsertInput)
+            LOG.info("USE CONFIG INPUT SOURCE FOR In VIM INSERT MODE" + inVimInsertConfig)
         }
-        if (configurationProvider!!.OutOfIdeaInput != null) {
+        if (configurationProvider!!.outOfIdeaConfig != null) {
 
-            OutOfIdeaInput = configurationProvider!!.OutOfIdeaInput!!
+            outOfIdeaConfig = configurationProvider!!.outOfIdeaConfig!!
 
-            LOG.info("USE CONFIG INPUT SOURCE FOR OUT OF IDEA" + OutOfIdeaInput)
+            LOG.info("USE CONFIG INPUT SOURCE FOR OUT OF IDEA" + outOfIdeaConfig)
         }
-        if (configurationProvider!!.IdeaFocusedInput != null) {
+        if (configurationProvider!!.inIdeaConfig != null) {
 
-            IdeaFocusedInput = configurationProvider!!.IdeaFocusedInput!!
+            inIdeaConfig = configurationProvider!!.inIdeaConfig!!
 
-            LOG.info("USE CONFIG INPUT SOURCE FOR IDEA FOCUSED" + IdeaFocusedInput)
-        }
+            LOG.info("USE CONFIG INPUT SOURCE FOR IDEA FOCUSED" + inIdeaConfig)
+        } //load complete
+
         LOG.info("INIT SUCCESSFUL")
     }
 
@@ -86,23 +97,31 @@ class AutoSwitchComponent : ApplicationComponent {
 
                 val commandName = event!!.commandName
 
+                /**
+                 * out of vim insert mode
+                 */
                 if (OUT_VIM_INSERT_MODE.contains(commandName)) {
-                    lastInputSource = currentInputSourceId
-                    inNormal = true
-                    if (lastInputSource == null || lastInputSource == OutVimInsertInput)
-                        return
-                    switchTo(OutVimInsertInput)
+                    handleOutVimInsertSwitch()
+                    /**
+                     * into vim insert mode
+                     */
                 } else if (IN_VIM_INSERT_MODE.contains(commandName)) {
-                    val current = currentInputSourceId
-                    inNormal = false
-                    if (current == null || current == InVimInsertInput )
-                            return
-                    switchTo(InVimInsertInput)
+                    handleInVimInsertSwitch()
+
+                    /**
+                     * start typing => not in vim normal mode
+                     */
                 } else if ("Typing" == commandName) {
+
+                    // set current vim mode to normal
                     inNormal = false
+
                 } else if ("" == commandName) {
+
+                    // if current in normal mode
                     if (inNormal!!)
-                        switchTo(OutVimInsertInput)
+                        handleOutVimInsertSwitch()
+
                 }
             }
         }
@@ -114,17 +133,11 @@ class AutoSwitchComponent : ApplicationComponent {
     private val frameStateListener: FrameStateListener
         get() = object : FrameStateListener.Adapter() {
             override fun onFrameDeactivated() {
-                val current = currentInputSourceId
-                if (current == null || current == OutOfIdeaInput)
-                    return
-                switchTo(OutOfIdeaInput)
+                handleOutIdeaSwitch()
             }
 
             override fun onFrameActivated() {
-                val current = currentInputSourceId
-                if (current == null || current == IdeaFocusedInput)
-                    return
-                switchTo(IdeaFocusedInput)
+                handInIdeaSwitch()
             }
         }
 
@@ -170,10 +183,10 @@ class AutoSwitchComponent : ApplicationComponent {
 
         private val LOG = Logger.getInstance(AutoSwitchComponent::class.java)
 
-        var OutVimInsertInput = "com.apple.keylayout.ABC"
-        var InVimInsertInput = "com.apple.keylayout.ABC"
-        var IdeaFocusedInput = "com.apple.keylayout.ABC"
-        var OutOfIdeaInput = "com.apple.keylayout.ABC"
+        var outVimInsertConfig = Constraints.CONFIG_INPUT_DEFAULT
+        var inVimInsertConfig = Constraints.CONFIG_INPUT_DEFAULT
+        var inIdeaConfig = Constraints.CONFIG_INPUT_DEFAULT
+        var outOfIdeaConfig = Constraints.CONFIG_INPUT_DEFAULT
 
 
         /**
@@ -212,4 +225,76 @@ class AutoSwitchComponent : ApplicationComponent {
                 "Vim Delete Previous Word")
     }
 
+    internal fun handleInVimInsertSwitch(){
+
+        //get current input source
+        currentInputSource = currentInputSourceId
+        //record last input source state for last-in-vim-insert-mode
+        lastOutVimInsert = currentInputSource
+
+        inNormal = false
+
+        handle(currentInputSource,lastInVimInsert, inVimInsertConfig)
+
+    }
+
+    internal fun handleOutVimInsertSwitch(){
+
+        //get current input source
+        currentInputSource = currentInputSourceId
+        //record last input source state for last-in-vim-insert-mode
+        lastInVimInsert = currentInputSource
+
+        inNormal = true
+
+        handle(currentInputSource,lastOutVimInsert, outVimInsertConfig)
+
+    }
+
+    internal fun handleOutIdeaSwitch(){
+
+        //get current input source
+        currentInputSource = currentInputSourceId
+        //record last input source state for last-in-vim-insert-mode
+        lastInIdea = currentInputSource
+
+        handle(currentInputSource,lastOutIdea, outOfIdeaConfig)
+
+    }
+
+    internal fun handInIdeaSwitch(){
+
+        //get current input source
+        currentInputSource = currentInputSourceId
+        //record last input source state for last-in-vim-insert-mode
+        lastOutIdea = currentInputSource
+
+        handle(currentInputSourceId,lastInIdea, inIdeaConfig)
+
+    }
+
+    internal fun handle(current:String?,last:String?,config:String) {
+
+        if (current == null || current == config) return
+
+        when (config) {
+
+            Constraints.CONFIG_INPUT_LAST -> {
+
+                if (last == null || current == last) {
+                    return
+                } else {
+                    switchTo(last)
+                }
+
+            }
+
+            Constraints.CONFIG_INPUT_NONE -> return
+
+        // use input source in configuration
+            else -> {
+                switchTo(config)
+            }
+        }
+    }
 }

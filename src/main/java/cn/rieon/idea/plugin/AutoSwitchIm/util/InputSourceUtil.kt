@@ -129,17 +129,10 @@ object InputSourceUtil {
 
             inputSources = ArrayList<Pair<String, String>>()
 
-            for (x in pairStrArr) {
-
-                val p = x.split(":".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
-
-                if (filterInputSource(p[0])){
-
-                    inputSources!!.add(Pair(p[0], p[1]))
-
-                }
-
-            }
+            pairStrArr
+                    .map { x -> x.split(":".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray() }
+                    .filter { filterInputSource(it[0]) }
+                    .forEach { inputSources!!.add(Pair(it[0], it[1])) }
 
             return inputSources as ArrayList<Pair<String, String>>
         }

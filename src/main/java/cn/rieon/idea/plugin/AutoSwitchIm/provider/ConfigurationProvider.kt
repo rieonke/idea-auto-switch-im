@@ -31,7 +31,7 @@ class ConfigurationProvider : PersistentStateComponent<ConfigurationProvider.Sta
         myState = state
     }
 
-    var IdeaFocusedInput: String?
+    var inIdeaConfig: String?
         get() {
 
             if (myState != null) {
@@ -44,11 +44,11 @@ class ConfigurationProvider : PersistentStateComponent<ConfigurationProvider.Sta
         set(input) {
 
             myState!!.IdeaFocusedInput = input
-            AutoSwitchComponent.IdeaFocusedInput = myState!!.IdeaFocusedInput!!
+            AutoSwitchComponent.inIdeaConfig = myState!!.IdeaFocusedInput!!
 
         }
 
-    var InVimInsertInput: String?
+    var InVimInsertConfig: String?
         get() {
 
             if (myState != null) {
@@ -61,11 +61,11 @@ class ConfigurationProvider : PersistentStateComponent<ConfigurationProvider.Sta
         set(input) {
 
             myState!!.InVimInsertInput = input
-            AutoSwitchComponent.InVimInsertInput = myState!!.InVimInsertInput!!
+            AutoSwitchComponent.inVimInsertConfig = myState!!.InVimInsertInput!!
 
         }
 
-    var OutVimInsertInput: String?
+    var outVimInsertConfig: String?
         get() {
 
             if (myState != null) {
@@ -78,11 +78,11 @@ class ConfigurationProvider : PersistentStateComponent<ConfigurationProvider.Sta
         set(input) {
 
             myState!!.OutVimInsertInput = input
-            AutoSwitchComponent.OutVimInsertInput = myState!!.OutVimInsertInput!!
+            AutoSwitchComponent.outVimInsertConfig = myState!!.OutVimInsertInput!!
 
         }
 
-    var OutOfIdeaInput: String?
+    var outOfIdeaConfig: String?
         get() {
 
             if (myState != null) {
@@ -95,7 +95,7 @@ class ConfigurationProvider : PersistentStateComponent<ConfigurationProvider.Sta
         set(input) {
 
             myState!!.OutOfIdeaInput = input
-            AutoSwitchComponent.OutOfIdeaInput = myState!!.OutOfIdeaInput!!
+            AutoSwitchComponent.outOfIdeaConfig = myState!!.OutOfIdeaInput!!
 
         }
 
