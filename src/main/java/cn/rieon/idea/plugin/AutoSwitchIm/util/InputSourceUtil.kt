@@ -1,7 +1,6 @@
 package cn.rieon.idea.plugin.AutoSwitchIm.util
 
 import com.intellij.openapi.diagnostic.Logger
-import javafx.util.Pair
 import java.awt.SystemColor.text
 
 import java.io.*

@@ -97,6 +97,7 @@ class AutoSwitchComponent : ApplicationComponent {
 
                 val commandName = event!!.commandName
 
+                LOG.info("Current Command Name is " + commandName)
                 /**
                  * out of vim insert mode
                  */
@@ -112,6 +113,7 @@ class AutoSwitchComponent : ApplicationComponent {
                      * start typing => not in vim normal mode
                      */
                 } else if ("Typing" == commandName) {
+
 
                     // set current vim mode to normal
                     inNormal = false

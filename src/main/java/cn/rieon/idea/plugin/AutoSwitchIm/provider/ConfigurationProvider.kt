@@ -6,9 +6,6 @@ import com.intellij.openapi.components.ServiceManager
 import com.intellij.openapi.components.State
 import com.intellij.openapi.components.Storage
 
-/**
- * @author oleg
- */
 @State(name = "ConfigurationProvider", storages = arrayOf(Storage("selected_input_source_setting_1_3.xml")))
 class ConfigurationProvider : PersistentStateComponent<ConfigurationProvider.State> {
 

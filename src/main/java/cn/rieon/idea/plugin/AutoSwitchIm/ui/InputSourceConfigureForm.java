@@ -6,7 +6,7 @@ import com.intellij.openapi.ui.Messages;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
-import javafx.util.Pair;
+import kotlin.Pair;
 
 import javax.swing.*;
 import java.awt.*;
@@ -31,6 +31,12 @@ class InputSourceConfigureForm {
     JComboBox InVimInsertCbx;
     JComboBox OutVimInsertCbx;
     private ConfigurationProvider configurationProvider;
+
+
+    /**
+     * source key => value
+     *        input source id => input source name
+     */
     private ArrayList<Pair<String, String>> sources;
     private boolean isComboBoxModified = false;
     private JPanel rootPanel;
@@ -38,6 +44,7 @@ class InputSourceConfigureForm {
     JPanel createPanel(ConfigurationProvider provider, ArrayList<Pair<String, String>> sources) {
 
         configurationProvider = provider;
+
         this.sources = sources;
 
         setUpPanel(sources);
@@ -88,8 +95,9 @@ class InputSourceConfigureForm {
             boolean selectedExists = false;
             for (Pair<String, String> pair : sources) {
 
-                if (pair.getKey().equals(selected)){
+                if (pair.getFirst().equals(selected)){
                     selectedExists = true;
+                    break;
                 }
 
             }
@@ -124,23 +132,23 @@ class InputSourceConfigureForm {
         OutVimInsertCbx = new JComboBox();
 
         sources.forEach( pair -> {
-            String item = pair.getValue() + "(" + pair.getKey() + ")";
+            String item = pair.getSecond() + "(" + pair.getFirst()   + ")";
 
             IdeaFocusedCbx.addItem(item);
             OutOfIdeaCbx.addItem(item);
             InVimInsertCbx.addItem(item);
             OutVimInsertCbx.addItem(item);
 
-            if (Objects.equals(configurationProvider.getInIdeaConfig(), pair.getKey())) {
+            if (Objects.equals(configurationProvider.getInIdeaConfig(), pair.getFirst())) {
                 IdeaFocusedCbx.setSelectedItem(item);
             }
-            if (Objects.equals(configurationProvider.getOutOfIdeaConfig(), pair.getKey())) {
+            if (Objects.equals(configurationProvider.getOutOfIdeaConfig(), pair.getFirst())) {
                 OutOfIdeaCbx.setSelectedItem(item);
             }
-            if (Objects.equals(configurationProvider.getInVimInsertConfig(), pair.getKey())) {
+            if (Objects.equals(configurationProvider.getInVimInsertConfig(), pair.getFirst())) {
                 InVimInsertCbx.setSelectedItem(item);
             }
-            if (Objects.equals(configurationProvider.getOutVimInsertConfig(), pair.getKey())) {
+            if (Objects.equals(configurationProvider.getOutVimInsertConfig(), pair.getFirst())) {
                 OutVimInsertCbx.setSelectedItem(item);
             }
 

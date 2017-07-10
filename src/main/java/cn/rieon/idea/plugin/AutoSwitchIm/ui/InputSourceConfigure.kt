@@ -5,7 +5,6 @@ import cn.rieon.idea.plugin.AutoSwitchIm.provider.ConfigurationProvider
 import cn.rieon.idea.plugin.AutoSwitchIm.util.InputSourceUtil
 import com.intellij.openapi.options.Configurable
 import com.intellij.openapi.options.ConfigurationException
-import javafx.util.Pair
 import org.jetbrains.annotations.Nls
 
 import javax.swing.*
