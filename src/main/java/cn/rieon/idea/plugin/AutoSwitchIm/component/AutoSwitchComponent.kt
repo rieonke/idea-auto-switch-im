@@ -98,6 +98,11 @@ class AutoSwitchComponent : ApplicationComponent {
                 val commandName = event!!.commandName
 
                 LOG.info("Current Command Name is " + commandName)
+
+                if (commandName == null || commandName == "null"){
+                    return;
+                }
+
                 /**
                  * out of vim insert mode
                  */
@@ -229,12 +234,13 @@ class AutoSwitchComponent : ApplicationComponent {
 
     internal fun handleInVimInsertSwitch(){
 
+        inNormal = false
+        if (inVimInsertConfig == Constraints.CONFIG_INPUT_NONE) return;
+
         //get current input source
         currentInputSource = currentInputSourceId
         //record last input source state for last-in-vim-insert-mode
         lastOutVimInsert = currentInputSource
-
-        inNormal = false
 
         handle(currentInputSource,lastInVimInsert, inVimInsertConfig)
 
@@ -242,12 +248,13 @@ class AutoSwitchComponent : ApplicationComponent {
 
     internal fun handleOutVimInsertSwitch(){
 
+        inNormal = true
+        if (outVimInsertConfig == Constraints.CONFIG_INPUT_NONE) return;
         //get current input source
         currentInputSource = currentInputSourceId
         //record last input source state for last-in-vim-insert-mode
         lastInVimInsert = currentInputSource
 
-        inNormal = true
 
         handle(currentInputSource,lastOutVimInsert, outVimInsertConfig)
 
@@ -255,6 +262,7 @@ class AutoSwitchComponent : ApplicationComponent {
 
     internal fun handleOutIdeaSwitch(){
 
+        if (outOfIdeaConfig == Constraints.CONFIG_INPUT_NONE) return;
         //get current input source
         currentInputSource = currentInputSourceId
         //record last input source state for last-in-vim-insert-mode
@@ -266,6 +274,7 @@ class AutoSwitchComponent : ApplicationComponent {
 
     internal fun handInIdeaSwitch(){
 
+        if (inIdeaConfig == Constraints.CONFIG_INPUT_NONE) return;
         //get current input source
         currentInputSource = currentInputSourceId
         //record last input source state for last-in-vim-insert-mode
