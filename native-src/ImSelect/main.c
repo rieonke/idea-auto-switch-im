@@ -79,20 +79,29 @@ listAllInputSource(){
             
             CFStringRef originalSourceId;
             CFStringRef originalName;
+            CFStringRef originalCategory;
+            CFBooleanRef selectable;
             
             originalSourceId = TISGetInputSourceProperty(tisr, kTISPropertyInputSourceID);
             originalName = TISGetInputSourceProperty(tisr, kTISPropertyLocalizedName);
+            originalCategory = TISGetInputSourceProperty(tisr, kTISPropertyInputSourceCategory);
+            selectable = TISGetInputSourceProperty(tisr, kTISPropertyInputSourceIsSelectCapable);
             
-            int targetSourceLength = (int)CFStringGetLength(originalSourceId) * 4 + 1;
-            char targetSourceStr[targetSourceLength];
-            CFStringGetCString(originalSourceId, targetSourceStr, targetSourceLength, kCFStringEncodingUTF8);
+            if (CFBooleanGetValue(selectable) && !CFStringCompare(originalCategory, kTISCategoryKeyboardInputSource, kCFCompareCaseInsensitive)) {
+                int targetSourceLength = (int)CFStringGetLength(originalSourceId) * 4 + 1;
+                char targetSourceStr[targetSourceLength];
+                CFStringGetCString(originalSourceId, targetSourceStr, targetSourceLength, kCFStringEncodingUTF8);
+                
+                int targetNameLength = (int)CFStringGetLength(originalName) * 4 + 1;
+                char targetNameStr [targetNameLength];
+                CFStringGetCString(originalName, targetNameStr, targetNameLength, kCFStringEncodingUTF8);
+                printf("%s:%s|",targetSourceStr,targetNameStr);
+            }
             
-            int targetNameLength = (int)CFStringGetLength(originalName) * 4 + 1;
-            char targetNameStr [targetNameLength];
-            CFStringGetCString(originalName, targetNameStr, targetNameLength, kCFStringEncodingUTF8);
-            printf("%s:%s|",targetSourceStr,targetNameStr);
             CFRelease(originalSourceId);
             CFRelease(originalName);
+            CFRelease(originalCategory);
+            CFRelease(selectable);
             CFRelease(tisr);
         }
     }

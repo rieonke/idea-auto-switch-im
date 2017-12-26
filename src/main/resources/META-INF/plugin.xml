@@ -29,6 +29,7 @@
     ]]></description>
 
     <change-notes><![CDATA[
+      <li>1.4.3 Enhanced native input source list</li>
       <li>1.4.2 performance improvement</li>
       <li>1.4.1 Add all idea platform support</li>
       <li>1.4 Add NONE and LAST config options</li>
@@ -40,6 +41,7 @@
       <br/>
       <br/>
 
+      <li>1.4.3 优化了输入法选择内容</li>
       <li>1.4.2 优化性能</li>
       <li>1.4.1 添加多平台的支持</li>
       <li>1.4 添加NONE 和 LAST 配置选项</li>
